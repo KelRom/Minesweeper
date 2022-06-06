@@ -10,6 +10,7 @@ WidgetsFrame::WidgetsFrame() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxPoint
 		for (int y = 0; y < numCellsY; y++)
 		{
 			buttons[y * numCellsX + x] = new wxButton(this, 10000 + (y * numCellsX + x));
+			buttons[y * numCellsX + x]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &OnButtonClicked, this);
 			grid->Add(buttons[y * numCellsX + x], 1, wxEXPAND | wxALL);
 		}
 	}
@@ -19,4 +20,12 @@ WidgetsFrame::WidgetsFrame() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxPoint
 WidgetsFrame::~WidgetsFrame()
 {
 	delete[] buttons;
+}
+
+void WidgetsFrame::OnButtonClicked(wxCommandEvent& evt)
+{
+	int x = (evt.GetId() - 10000) % numCellsX;
+	int y = (evt.GetId() - 10000) / numCellsY;
+
+	evt.Skip();
 }
